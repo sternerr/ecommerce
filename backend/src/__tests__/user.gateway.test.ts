@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { UserGateway } from "../data/gateways/user.ts";
+import { UserGateway } from "../data/gateways/user.gateway.ts";
 
 test("[Data Layer]: UserGateway", async () => {
 	let user: UserGateway | undefined = new UserGateway({ email: "test@test.com", password: "123456" });
