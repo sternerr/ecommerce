@@ -9,6 +9,6 @@ app.get("/", (req: Request, res: Response) => {
 	res.json({ message: "Welcome to ecommerce backend" });
 });
 
-app.listen(PORT, () => {
-	console.log(`Ecommerce backend @ http://localhost:${PORT}`);
+app.listen(PORT || 3000, () => {
+	console.log(`Ecommerce backend @ http://localhost:${PORT || 3000}`);
 })

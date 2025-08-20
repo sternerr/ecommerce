@@ -11,4 +11,5 @@ function getEnv(key: string, required = true): string {
 	return value as string
 }
 
-export const PORT: number = parseInt(getEnv("PORT", false)) || 3000
+export const PORT: number = parseInt(getEnv("PORT", false));
+export const DB_URI: string = getEnv("DB_URI", true);
