@@ -55,6 +55,34 @@ export async function getProduct(req: Request, res: Response, next: any) {
 	}
 }
 
+export async function updateProduct(req: Request, res: Response, next: any) {
+	try {
+		if (!req.file) {
+			throw new Error("No image exists");
+		}
+
+		const { id, name, description, price, stock } = req.body;
+		const product: Product = await ProductGateway.update({
+			id,
+			name,
+			description,
+			price,
+			stock,
+			imgpath: req.file.filename
+		});
+
+		res.status(200).json({
+			success: true,
+			message: "Retrived product successfully",
+			data: {
+				product,
+			}
+		});
+	} catch (error) {
+		next(error)
+	}
+}
+
 export async function deleteProduct(req: Request, res: Response, next: any) {
 	try {
 		const { id } = req.params;

@@ -51,13 +51,29 @@ export class ProductGateway {
 		}
 	}
 
+	static async update(product: Omit<Product, "created_at" | "updated_at">): Promise<Product> {
+		try {
+			const res = await pool.query(
+				`UPDATE products
+				SET name=$1, description=$2, imgpath=$3, price=$4, stock=$5, updated_at=NOW()
+				WHERE id=$6
+				RETURNING *`,
+				[product.name, product.description, product.imgpath, product.price, product.stock, product.id]
+			)
+
+			return res.rows[0];
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	static async delete(id: string): Promise<Product> {
 		if (!id) {
 			throw new Error("Cannot delete product without ID");
 		}
 
 		try {
-			const res = await pool.query(`DELETE FROM products WHERE id=$1 RETURNING *`, [id]);
+			const res = await pool.query(`DELETE FROM products WHERE id = $1 RETURNING * `, [id]);
 			if (res.rowCount === 0) {
 				throw new Error("Product did not exists");
 			}

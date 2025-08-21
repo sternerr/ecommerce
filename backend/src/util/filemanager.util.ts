@@ -21,7 +21,7 @@ class FileManager {
 				let counter = 1;
 
 				// Check if file exists and append number if necessary
-				while (fs.existsSync(path.join(this.destination, finalName))) {
+				while (!req.route.methods.put && fs.existsSync(path.join(this.destination, finalName))) {
 					finalName = `${baseName}_${counter}${ext}`;
 					counter++;
 				}

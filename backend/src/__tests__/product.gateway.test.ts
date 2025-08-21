@@ -18,6 +18,11 @@ test("[Data Layer]: ProductGateway", async () => {
 	expect(product.created_at).toBeDefined();
 	expect(product.created_at).toBeDefined();
 
-	const deletedId = await ProductGateway.delete(product);
-	expect(deletedId).toBe(product.id);
+	product.name = "prod";
+	product = await ProductGateway.update(product);
+	expect(product.name).toBe("prod");
+
+	let id = product.id
+	product = await ProductGateway.delete(product.id);
+	expect(product.id).toBe(id);
 });
