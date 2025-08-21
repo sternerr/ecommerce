@@ -22,13 +22,13 @@ export class ProductGateway {
 		}
 	}
 
-	static async findById(product: Product): Promise<Product> {
-		if (!product.id) {
+	static async findById(id: string): Promise<Product> {
+		if (!id) {
 			throw new Error("Can't retrieve product without id");
 		}
 
 		try {
-			const res = await pool.query("SELECT * from products WHERE id=$1", [product.id]);
+			const res = await pool.query("SELECT * from products WHERE id=$1", [id]);
 			return res.rows[0];
 		} catch (error) {
 			throw error;
@@ -51,14 +51,18 @@ export class ProductGateway {
 		}
 	}
 
-	static async delete(product: Product): Promise<string> {
-		if (!product.id) {
+	static async delete(id: string): Promise<Product> {
+		if (!id) {
 			throw new Error("Cannot delete product without ID");
 		}
 
 		try {
-			const res = await pool.query(`DELETE FROM products WHERE id=$1 RETURNING id`, [product.id]);
-			return res.rows[0].id;
+			const res = await pool.query(`DELETE FROM products WHERE id=$1 RETURNING *`, [id]);
+			if (res.rowCount === 0) {
+				throw new Error("Product did not exists");
+			}
+
+			return res.rows[0];
 		} catch (error) {
 			throw error;
 		}
