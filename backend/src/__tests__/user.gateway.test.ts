@@ -1,23 +1,18 @@
 import { expect, test } from "vitest";
-import { UserGateway } from "../data/gateways/user.gateway.ts";
+import { UserGateway, type User } from "../data/gateways/user.gateway.ts";
 
 test("[Data Layer]: UserGateway", async () => {
-	let user: UserGateway | undefined = new UserGateway({ email: "test@test.com", password: "123456" });
+	let user: User = await UserGateway.insert({ email: "test@test.com", password: "123456" });
 	expect(user.email).toBe("test@test.com");
 	expect(user.password).toBe("123456");
-
-	await user.insert();
 	expect(user.id).toBeDefined();
 	expect(user.created_at).toBeDefined();
 	expect(user.created_at).toBeDefined();
 
-	user.email = "testa@gmail.com";
-	user.update();
-	expect(user.email).toBe("testa@gmail.com");
+	const id: string = user.id!
+	let u = await UserGateway.findById(user);
+	expect(u!.id).toBe(id);
 
-	const id: string = user.id!;
-	user = await UserGateway.findById(id);
-	expect(user!.id).toBe(id);
-
-	user!.delete();
+	let deleteId: string = await UserGateway.delete(user);
+	expect(deleteId).toBe(id);
 });

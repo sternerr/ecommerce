@@ -4,6 +4,8 @@ CREATE TABLE products(
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
 	name TEXT NOT NULL,
+	description TEXT NOT NULL,
+	imgpath TEXT NOT NULL,
 	price REAL NOT NULL,
 	stock INTEGER NOT NULL
 );
