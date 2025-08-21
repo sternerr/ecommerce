@@ -7,6 +7,7 @@ export type User = {
 	updated_at: Date;
 	email: string;
 	password: string;
+	isadmin: boolean;
 }
 
 export class UserGateway {
@@ -23,10 +24,10 @@ export class UserGateway {
 		try {
 			const id = uuidv4();
 			const res = await pool.query(`
-				INSERT INTO users(id, email, password, created_at, updated_at)
-				VALUES($1, $2, $3, NOW(), NOW())
-				RETURNING *;`,
-				[id, user.email, user.password]
+				INSERT INTO users(id, email, password, isadmin, created_at, updated_at)
+				VALUES($1, $2, $3, $4, NOW(), NOW())
+				RETURNING *`,
+				[id, user.email, user.password, user.isadmin]
 			)
 
 			return res.rows[0];

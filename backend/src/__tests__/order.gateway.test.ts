@@ -3,7 +3,7 @@ import { UserGateway, type User } from "../data/gateways/user.gateway.ts";
 import { OrderGateway, type Order } from "../data/gateways/order.gateway.ts";
 
 test("[Data Layer]: OrderGateway", async () => {
-	let user: User = await UserGateway.insert({ email: "test@test.com", password: "123456" });
+	let user: User = await UserGateway.insert({ email: "test@test.com", password: "123456", isadmin: true });
 
 	let order: Order = await OrderGateway.insert({ totalprice: 2000, user_id: user.id })
 	expect(order.totalprice).toBe(2000);

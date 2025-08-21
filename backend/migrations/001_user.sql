@@ -4,7 +4,8 @@ CREATE TABLE users(
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
 	email TEXT NOT NULL UNIQUE,
-	password TEXT NOT NULL
+	password TEXT NOT NULL,
+	isadmin BOOLEAN NOT NUll
 );
 
 -- +goose Down
