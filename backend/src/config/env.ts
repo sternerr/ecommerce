@@ -8,8 +8,10 @@ function getEnv(key: string, required = true): string {
 		throw new Error(`Missing environemnt variable: ${key}`);
 	}
 
-	return value as string
+	return value ?? "";
 }
 
 export const PORT: number = parseInt(getEnv("PORT", false));
 export const DB_URI: string = getEnv("DB_URI", true);
+export const JWT_SECRET: string = getEnv("JWT_SECRET", true);
+export const JWT_EXPIRES_IN: string = getEnv("JWT_EXPIRES_IN", true);

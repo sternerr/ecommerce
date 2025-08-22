@@ -20,6 +20,15 @@ export class UserGateway {
 		}
 	}
 
+	static async findByEmail(email: string): Promise<User> {
+		try {
+			const res = await pool.query("SELECT * from users WHERE email=$1", [email]);
+			return res.rows[0];
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	static async insert(user: Omit<User, "id" | "created_at" | "updated_at">): Promise<User> {
 		try {
 			const id = uuidv4();
