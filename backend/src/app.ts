@@ -4,6 +4,7 @@ import express from "express";
 import productRouter from "./routes/product.route.ts";
 
 import authRouter from "./routes/auth.router.ts";
+import orderRouter from "./routes/order.route.ts";
 
 class App {
 	private express: Express;
@@ -22,6 +23,7 @@ class App {
 	private routes(): void {
 		this.express.use("/api/v1/products", productRouter);
 		this.express.use("/api/v1/auth", authRouter);
+		this.express.use("/api/v1/orders", orderRouter);
 
 		this.express.get("/", (req: Request, res: Response) => {
 			res.json({ message: "Welcome to ecommerce backend" });

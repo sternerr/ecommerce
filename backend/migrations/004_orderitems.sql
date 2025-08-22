@@ -2,7 +2,7 @@
 CREATE TABLE order_items (
     productId UUID REFERENCES products(id) ON DELETE RESTRICT,
     orderId UUID REFERENCES orders(id) ON DELETE CASCADE,
-    quantity INT,
+    quantity INT NOT NULL,
     PRIMARY KEY (productId, orderId)
 );
 
