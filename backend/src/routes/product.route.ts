@@ -2,14 +2,25 @@ import { Router } from "express";
 import fileManager from "../util/filemanager.util.ts";
 
 import type { Request, Response } from "express";
-import { createProduct, getProduct, getProducts, updateProduct } from "../controllers/product.controller.ts";
-import { authorize, isAdmin } from "../middleware/authorization.middleware.ts";
+import ProductController from "../controllers/product.controller.ts";
+import AuthorizationMiddleware from "../middleware/authorization.middleware.ts";
 
 const productRouter = Router();
 
-productRouter.post("/", authorize, isAdmin, fileManager.upload.single("file"), createProduct);
-productRouter.get("/", getProducts);
-productRouter.get("/:id", getProduct);
-productRouter.put("/", authorize, isAdmin, fileManager.upload.single("file"), updateProduct);
+productRouter.post("/",
+	AuthorizationMiddleware.authorize,
+	AuthorizationMiddleware.isAdmin,
+	fileManager.upload.single("file"),
+	ProductController.createProduct
+);
+
+productRouter.get("/", ProductController.getProducts);
+productRouter.get("/:id", ProductController.getProduct);
+productRouter.put("/",
+	AuthorizationMiddleware.authorize,
+	AuthorizationMiddleware.isAdmin,
+	fileManager.upload.single("file"),
+	ProductController.updateProduct
+);
 
 export default productRouter;
