@@ -54,13 +54,26 @@ export class OrderController {
 				})
 			);
 
-			if (id) {
+			if (req.user && req.user.isadmin) {
+				res.status(200).json({
+					ok: true,
+					message: "Retrived orders successfully",
+					data: {
+						ordersWithItems
+					}
+				});
+			} else if (id && req.user && id === req.user.id) {
 				ordersWithItems = ordersWithItems.filter((order) => order.user_id === id)
+			} else {
+				res.status(401).json({
+					ok: true,
+					message: "Unauthorized",
+				});
 			}
 
 			res.status(200).json({
-				success: true,
-				message: "Retrived products successfully",
+				ok: true,
+				message: "Retrived orders successfully",
 				data: {
 					ordersWithItems
 				}
@@ -78,17 +91,26 @@ export class OrderController {
 			}
 
 			const order: Order = await OrderGateway.findById(id);
-
 			const items = await OrderItemsGateway.findAllByOrderId(order.id);
 			const orderWithItems = { ...order, orderItems: items };
 
-			res.status(200).json({
-				success: true,
-				message: "Retrived products successfully",
-				data: {
-					orderWithItems
-				}
-			});
+			if (req.user && req.user.isadmin) {
+				res.status(200).json({
+					ok: true,
+					message: "Retrived order by id successfully",
+					data: {
+						orderWithItems
+					}
+				});
+			} else if (req.user && req.user.id === order.user_id) {
+				res.status(200).json({
+					ok: true,
+					message: "Retrived order by id successfully",
+					data: {
+						orderWithItems
+					}
+				});
+			}
 		} catch (error) {
 			next(error)
 		}

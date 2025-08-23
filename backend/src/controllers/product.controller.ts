@@ -4,13 +4,21 @@ import { ProductGateway, type Product } from "../data/gateways/product.gateway.t
 
 export async function createProduct(req: Request, res: Response, next: any) {
 	try {
-		const { name, description, price, stock } = req.body;
+		const { name, description, price, stock, isvisible } = req.body;
 
 		if (!req.file) {
 			throw new Error("No image exists");
 		}
 
-		const product: Product = await ProductGateway.insert({ name, description, price, stock, imgpath: req.file.filename });
+		const product: Product = await ProductGateway.insert({
+			name,
+			description,
+			price,
+			stock,
+			imgpath: req.file.filename,
+			isvisible
+		});
+
 		res.status(201).json({
 			ok: true,
 			message: "Product created successfully",
@@ -61,14 +69,15 @@ export async function updateProduct(req: Request, res: Response, next: any) {
 			throw new Error("No image exists");
 		}
 
-		const { id, name, description, price, stock } = req.body;
+		const { id, name, description, price, stock, isvisible } = req.body;
 		const product: Product = await ProductGateway.update({
 			id,
 			name,
 			description,
 			price,
 			stock,
-			imgpath: req.file.filename
+			imgpath: req.file.filename,
+			isvisible
 		});
 
 		res.status(200).json({
@@ -76,25 +85,6 @@ export async function updateProduct(req: Request, res: Response, next: any) {
 			message: "Retrived product successfully",
 			data: {
 				product,
-			}
-		});
-	} catch (error) {
-		next(error)
-	}
-}
-
-export async function deleteProduct(req: Request, res: Response, next: any) {
-	try {
-		const { id } = req.params;
-		const product: Product = await ProductGateway.delete(id as string);
-
-		fileManger.deleteFile(product.imgpath);
-
-		res.status(200).json({
-			success: true,
-			message: "product deleted successfully",
-			data: {
-				product: product
 			}
 		});
 	} catch (error) {

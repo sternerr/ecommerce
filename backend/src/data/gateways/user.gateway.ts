@@ -11,9 +11,9 @@ export type User = {
 }
 
 export class UserGateway {
-	static async findById(user: User): Promise<User> {
+	static async findById(id: string): Promise<User> {
 		try {
-			const res = await pool.query("SELECT * from users WHERE id=$1", [user.id]);
+			const res = await pool.query("SELECT * from users WHERE id=$1", [id]);
 			return res.rows[0];
 		} catch (error) {
 			throw error;

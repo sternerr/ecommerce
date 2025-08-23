@@ -7,7 +7,8 @@ CREATE TABLE products(
 	description TEXT NOT NULL,
 	imgpath TEXT NOT NULL,
 	price REAL NOT NULL,
-	stock INTEGER NOT NULL
+	stock INTEGER NOT NULL,
+	isVisible BOOLEAN NOT NULL
 );
 
 -- +goose Down

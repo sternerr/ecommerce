@@ -10,6 +10,7 @@ export type Product = {
 	imgpath: string;
 	price: number;
 	stock: number;
+	isvisible: boolean;
 }
 
 export class ProductGateway {
@@ -39,10 +40,10 @@ export class ProductGateway {
 		try {
 			const id = uuidv4();
 			const res = await pool.query(
-				`INSERT INTO products(id, name, description, imgpath, price, stock, created_at, updated_at)
-				VALUES($1, $2, $3, $4, $5, $6, NOW(), NOW())
+				`INSERT INTO products(id, name, description, imgpath, price, stock, isvisible, created_at, updated_at)
+				VALUES($1, $2, $3, $4, $5, $6, $7, NOW(), NOW())
 				RETURNING *;`,
-				[id, product.name, product.description, product.imgpath, product.price, product.stock]
+				[id, product.name, product.description, product.imgpath, product.price, product.stock, product.isvisible]
 			)
 
 			return res.rows[0];
@@ -55,10 +56,10 @@ export class ProductGateway {
 		try {
 			const res = await pool.query(
 				`UPDATE products
-				SET name=$1, description=$2, imgpath=$3, price=$4, stock=$5, updated_at=NOW()
-				WHERE id=$6
+				SET name=$1, description=$2, imgpath=$3, price=$4, stock=$5, isvisible=$6, updated_at=NOW()
+				WHERE id=$7
 				RETURNING *`,
-				[product.name, product.description, product.imgpath, product.price, product.stock, product.id]
+				[product.name, product.description, product.imgpath, product.price, product.stock, product.isvisible, product.id]
 			)
 
 			return res.rows[0];
